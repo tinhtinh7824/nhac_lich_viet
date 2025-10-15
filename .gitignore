@@ -1,45 +1,103 @@
-# Miscellaneous
-*.class
-*.log
-*.pyc
-*.swp
-.DS_Store
+# ================================
+# 🌈 Flutter/Dart/Pub related
+# ================================
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub/
+.pub-cache/
+build/
+coverage/
+**/doc/api/
+**/ios/Flutter/.last_build_id
+
+# ================================
+# 💻 IDE & Editor settings
+# ================================
+*.iml
+*.ipr
+*.iws
+.idea/
+.vscode/
 .atom/
-.build/
-.buildlog/
 .history
 .svn/
 .swiftpm/
 migrate_working_dir/
 
-# IntelliJ related
-*.iml
-*.ipr
-*.iws
-.idea/
+# ================================
+# 🧱 OS-specific
+# ================================
+.DS_Store
+Thumbs.db
 
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
-#.vscode/
+# ================================
+# 🧰 Logs & temporary files
+# ================================
+*.log
+*.tmp
+*.swp
+*.pyc
+*.class
 
-# Flutter/Dart/Pub related
-**/doc/api/
-**/ios/Flutter/.last_build_id
-.dart_tool/
-.flutter-plugins-dependencies
-.pub-cache/
-.pub/
-/build/
-/coverage/
+# ================================
+# 📱 Android build artifacts
+# ================================
+android/.gradle/
+android/app/debug/
+android/app/profile/
+android/app/release/
+android/local.properties
+android/key.properties
 
-# Symbolication related
-app.*.symbols
+# Firebase config (private)
+android/app/google-services.json
 
-# Obfuscation related
-app.*.map.json
+# Keystore (private keys)
+*.keystore
+*.jks
 
-# Android Studio will place build artifacts here
-/android/app/debug
-/android/app/profile
-/android/app/release
+# ================================
+# 🍎 iOS build artifacts
+# ================================
+ios/Flutter/App.framework
+ios/Flutter/Flutter.framework
+ios/Flutter/Generated.xcconfig
+ios/Flutter/ephemeral/
+ios/ServiceDefinitions.json
+ios/Runner.xcworkspace/
+ios/Runner.xcuserstate
+ios/Pods/
+ios/.symlinks/
+
+# Firebase config (private)
+ios/Runner/GoogleService-Info.plist
+
+# Derived data
+DerivedData/
+
+# ================================
+# 🪟 Windows & 🐧 Linux build
+# ================================
+windows/flutter/
+linux/flutter/
+
+# ================================
+# 🔐 Certificates / Secrets
+# ================================
+*.p12
+*.pem
+*.cer
+*.crt
+*.key
+.env
+.env.*
+
+# ================================
+# ⚙️ Miscellaneous
+# ================================
+*.lock
+*.map.json
+*.symbols
+.macos/
