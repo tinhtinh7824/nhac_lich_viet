@@ -22,12 +22,15 @@ class EventSearchView extends GetView<EventSearchController> {
           children: [
           Container(
             decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xFF0F5925), Color(0xFF1FA259)],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-            ),
+    gradient: LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: [
+        Color(0xFF4DBA6E), // xanh lá đậm pha vàng
+    Color(0xFFDFFFEA), // xanh lá non sáng
+      ],
+    ),
+  ),
             child: SafeArea(
               bottom: false,
               child: Padding(
@@ -52,9 +55,9 @@ class EventSearchView extends GetView<EventSearchController> {
                         ),
                         SizedBox(width: 12.w),
                         Text(
-                          'Tìm kiếm sự kiện',
+                          'TÌM KIẾM SỰ KIỆN',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: const Color.fromARGB(255, 3, 94, 20),
                             fontSize: 20.sp,
                             fontWeight: FontWeight.w700,
                           ),

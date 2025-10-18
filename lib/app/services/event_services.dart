@@ -376,6 +376,12 @@ class EventServices extends GetxService {
 
   // --- MODIFIED ---
   Future<void> _mergeApiEvents(List<Event> apiEvents) async {
+    // Check if boxes are initialized before proceeding
+    if (!Hive.isBoxOpen(_eventBoxName) || !Hive.isBoxOpen(_eventSettingsBoxName)) {
+      LoggerUtils.warning('Boxes not initialized yet, skipping API merge');
+      return;
+    }
+
     final Map<String, Event> eventsToPut = {};
     final Set<String> affectedMonthKeys = {};
     bool needsRecurringCacheClear = false;
@@ -980,6 +986,12 @@ class EventServices extends GetxService {
 
   Future<void> saveUserEventSettings(Event event) async {
     if (event.eventType == EventTypeEnum.system_event.value) {
+      // Check if settings box is initialized
+      if (!Hive.isBoxOpen(_eventSettingsBoxName)) {
+        LoggerUtils.warning('Event settings box not initialized, cannot save user settings');
+        return;
+      }
+
       try {
         // 1. Save user settings to settings box
         final settingsToSave = {
@@ -1135,6 +1147,16 @@ class EventServices extends GetxService {
         LoggerUtils.warning('Event not found for deletion: $id');
         return false;
       }
+      if (!Hive.isBoxOpen(_eventSettingsBoxName)) {
+        LoggerUtils.warning('Event settings box not initialized, cannot delete event settings');
+        // Still allow deletion of the main event
+        final eventToDelete = _eventBox.get(id)!;
+        await _cancelEventNotification(eventToDelete.id);
+        await _eventBox.delete(id);
+        _notifyListeners();
+        return true;
+      }
+
       final eventToDelete = _eventBox.get(id)!;
 
       // Hủy thông báo TRƯỚC KHI xóa
@@ -1174,10 +1196,15 @@ class EventServices extends GetxService {
 
   List<Event> getAllEvents() {
     try {
-      // Check if box is initialized before accessing
+      // Check if boxes are initialized before accessing
       if (!Hive.isBoxOpen(_eventBoxName)) {
         LoggerUtils.debug(
             'Event box not initialized yet, returning empty list');
+        return [];
+      }
+      if (!Hive.isBoxOpen(_eventSettingsBoxName)) {
+        LoggerUtils.debug(
+            'Event settings box not initialized yet, returning empty list');
         return [];
       }
       if (!_eventBox.isOpen) {
@@ -1230,6 +1257,11 @@ class EventServices extends GetxService {
       if (!_eventBox.isOpen) {
         LoggerUtils.warning('Event box is not open, cannot get event by ID.');
         return null;
+      }
+      if (!Hive.isBoxOpen(_eventSettingsBoxName)) {
+        LoggerUtils.debug('Event settings box not initialized yet, returning event without user settings');
+        final Event? event = _eventBox.get(id);
+        return event;
       }
 
       final Event? event = _eventBox.get(id);

@@ -12,22 +12,34 @@ class AddEventView extends GetView<AddEventController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text(
-          'THÊM SỰ KIỆN MỚI',
-          style: TextStyle(
-            fontSize: 20.sp,
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF0F5925), Color(0xFF1FA259)],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
           ),
-        ),
-        backgroundColor: const Color(0xFF0F5925),
-        foregroundColor: Colors.white,
-        elevation: 0,
-        centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, size: 28.sp),
-          onPressed: () => Get.back(),
+          child: AppBar(
+            title: Text(
+              'THÊM SỰ KIỆN MỚI',
+              style: TextStyle(
+                fontSize: 20.sp,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
+            ),
+            backgroundColor: Colors.transparent,
+            foregroundColor: Colors.white,
+            elevation: 0,
+            centerTitle: true,
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back, size: 28.sp),
+              onPressed: () => Get.back(),
+            ),
+          ),
         ),
       ),
       body: Obx(() {
@@ -48,18 +60,7 @@ class AddEventView extends GetView<AddEventController> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(20.w, 20.h, 20.w, 12.h),
-              child: Text(
-                'Chọn nhóm sự kiện',
-                style: TextStyle(
-                  fontSize: 22.sp,
-                  fontWeight: FontWeight.w700,
-                  color: const Color(0xFF174C2C),
-                  letterSpacing: 0.2,
-                ),
-              ),
-            ),
+            
             Expanded(
               child: GridView.count(
                 crossAxisCount: 2,

@@ -289,55 +289,95 @@ class _EventsViewState extends State<EventsView> with TickerProviderStateMixin {
 
   Drawer _buildAppDrawer() {
     return Drawer(
-      child: SafeArea(
+      child: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/background_drawer.jpg'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               width: double.infinity,
-              padding: EdgeInsets.all(20.w),
-              decoration: BoxDecoration(
-                color: AppColors.primary.withValues(alpha: 0.1),
-              ),
+              padding: EdgeInsets.fromLTRB(24.w, 32.h, 24.w, 28.h),
+            
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CircleAvatar(
-                    radius: 32.r,
-                    backgroundColor: AppColors.primary,
-                    child: Text(
-                      'NL',
-                      style: TextStyle(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                  Container(
+                    padding: EdgeInsets.all(4.r),
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 7, 92, 30).withValues(alpha: 0.85),
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: 0.2),
+                        width: 2,
+                      ),
+                    ),
+                    child: CircleAvatar(
+                      radius: 34.r,
+                      backgroundColor: Colors.white,
+                      child: Container(
+                        width: 64.r,
+                        height: 64.r,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: AssetImage('assets/icons/logo.png'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 12.h),
+                  SizedBox(height: 16.h),
                   Text(
                     'Nhắc lịch Việt',
                     style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary,
+                      fontSize: 24.sp,
+                      fontWeight: FontWeight.w800,
+                      color: const Color.fromARGB(255, 0, 0, 0),
+                      letterSpacing: 0.5,
                     ),
                   ),
-                  SizedBox(height: 4.h),
-                  Text(
-                    'Quản lý ngày quan trọng của bạn',
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      color: Colors.grey[600],
+                  SizedBox(height: 6.h),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 7, 92, 30).withValues(alpha: 0.45),
+                      borderRadius: BorderRadius.circular(16.r),
+                      border: Border.all(
+                        color: const Color.fromARGB(255, 10, 88, 1).withValues(alpha: 0.2),
+                        width: 1,
+                      ),
+                    ),
+                    child: Text(
+                      'Quản lý ngày quan trọng của bạn',
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: const Color.fromARGB(255, 255, 255, 255).withValues(alpha: 0.9),
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
             Expanded(
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: [
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey[50],
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(24.r),
+                    topRight: Radius.circular(24.r),
+                  ),
+                ),
+                child: ListView(
+                  padding: EdgeInsets.only(top: 20.h, bottom: 20.h),
+                  children: [
                   _buildDrawerTile(
                     icon: Icons.feedback_outlined,
                     title: 'Feedback',
@@ -366,84 +406,284 @@ class _EventsViewState extends State<EventsView> with TickerProviderStateMixin {
                       Future.microtask(_showRatingPrompt);
                     },
                   ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
+        ),
         ),
       ),
     );
   }
 
-  ListTile _buildDrawerTile({
+  Widget _buildDrawerTile({
     required IconData icon,
     required String title,
     required String subtitle,
     required VoidCallback onTap,
   }) {
-    return ListTile(
-      leading: CircleAvatar(
-        radius: 20.r,
-        backgroundColor: AppColors.primary.withValues(alpha: 0.12),
-        child: Icon(icon, color: AppColors.primary),
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(20.r),
+          child: Container(
+            padding: EdgeInsets.all(16.r),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF4FBF7),
+              borderRadius: BorderRadius.circular(20.r),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.06),
+                  blurRadius: 10,
+                  offset: Offset(0, 4),
+                ),
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.04),
+                  blurRadius: 6,
+                  offset: Offset(0, 2),
+                ),
+              ],
+              border: Border.all(
+                color: const Color(0xFFCDEEDA),
+                width: 1,
+              ),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: 48.r,
+                  height: 48.r,
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withValues(alpha: 0.08),
+                    borderRadius: BorderRadius.circular(32.r),
+                  ),
+                  child: Icon(
+                    icon,
+                    color: AppColors.primary,
+                    size: 24.sp,
+                  ),
+                ),
+                SizedBox(width: 16.w),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.textPrimary,
+                          letterSpacing: 0.2,
+                        ),
+                      ),
+                      SizedBox(height: 4.h),
+                      Text(
+                        subtitle,
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          color: Colors.grey[600],
+                          fontWeight: FontWeight.w500,
+                          height: 1.3,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: 32.r,
+                  height: 32.r,
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withValues(alpha: 0.08),
+                    borderRadius: BorderRadius.circular(32.r),
+                  ),
+                  child: Icon(
+                    Icons.arrow_forward_ios,
+                    color: AppColors.primary,
+                    size: 16.sp,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
-      title: Text(
-        title,
-        style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
-      ),
-      subtitle: Text(
-        subtitle,
-        style: TextStyle(fontSize: 13.sp, color: Colors.grey[600]),
-      ),
-      onTap: onTap,
     );
   }
 
   void _showFeedbackDialog() {
     _feedbackController.clear();
     Get.dialog(
-      AlertDialog(
-        title: const Text('Gửi feedback'),
-        content: SizedBox(
-          width: double.maxFinite,
+      Dialog(
+        insetPadding: EdgeInsets.symmetric(horizontal: 24.w),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20.r),
+            color: Colors.white,
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Bạn có góp ý hay phản hồi nào? Hãy chia sẻ với chúng tôi!',
-                style: TextStyle(fontSize: 15.sp, color: Colors.grey[700]),
-              ),
-              SizedBox(height: 12.h),
-              TextField(
-                controller: _feedbackController,
-                maxLines: 5,
-                minLines: 3,
-                textInputAction: TextInputAction.newline,
-                decoration: InputDecoration(
-                  hintText: 'Nhập nội dung feedback...',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12.r),
+              // Header with gradient
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(vertical: 24.h),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+                  gradient: LinearGradient(
+                    colors: [
+                      const Color(0xFF24C16B),
+                      const Color(0xFF1FA259),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                   ),
-                  filled: true,
-                  fillColor: Colors.grey[100],
+                ),
+                child: Column(
+                  children: [
+                    Container(
+                      width: 72.w,
+                      height: 72.w,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.15),
+                        borderRadius: BorderRadius.circular(36.r),
+                        border: Border.all(
+                          color: Colors.white.withValues(alpha: 0.2),
+                          width: 2,
+                        ),
+                      ),
+                      child: Icon(
+                        Icons.feedback_outlined,
+                        color: Colors.white,
+                        size: 40.sp
+                      ),
+                    ),
+                    SizedBox(height: 12.h),
+                    Text(
+                      'Gửi feedback',
+                      style: TextStyle(
+                        fontSize: 22.sp,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.white,
+                        letterSpacing: 0.3,
+                      ),
+                    ),
+                    SizedBox(height: 6.h),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.w),
+                      child: Text(
+                        'Bạn có góp ý hay phản hồi nào?\nHãy chia sẻ với chúng tôi!',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 15.sp,
+                          color: Colors.white.withValues(alpha: 0.9),
+                          fontWeight: FontWeight.w500,
+                          height: 1.4,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // Content
+              Padding(
+                padding: EdgeInsets.all(24.w),
+                child: Column(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16.r),
+                        color: const Color(0xFFF4FBF7),
+                        border: Border.all(
+                          color: const Color(0xFFCDEEDA),
+                          width: 1,
+                        ),
+                      ),
+                      child: TextField(
+                        controller: _feedbackController,
+                        maxLines: 5,
+                        minLines: 4,
+                        textInputAction: TextInputAction.newline,
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          color: AppColors.textPrimary,
+                          height: 1.4,
+                        ),
+                        decoration: InputDecoration(
+                          hintText: 'Nhập nội dung feedback...',
+                          hintStyle: TextStyle(
+                            color: Colors.grey[500],
+                            fontSize: 16.sp,
+                          ),
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.all(16.r),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 24.h),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextButton(
+                            onPressed: () => Get.back(),
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.symmetric(vertical: 14.h),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.r),
+                                side: BorderSide(
+                                  color: AppColors.primary.withValues(alpha: 0.3),
+                                  width: 1,
+                                ),
+                              ),
+                            ),
+                            child: Text(
+                              'Hủy',
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.primary,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 12.w),
+                        Expanded(
+                          flex: 2,
+                          child: ElevatedButton(
+                            onPressed: _submitFeedback,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.primary,
+                              foregroundColor: Colors.white,
+                              padding: EdgeInsets.symmetric(vertical: 14.h),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.r),
+                              ),
+                              elevation: 2,
+                            ),
+                            child: Text(
+                              'Gửi feedback',
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w700
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Get.back(),
-            child: const Text('Hủy'),
-          ),
-          ElevatedButton(
-            onPressed: _submitFeedback,
-            child: const Text('Gửi'),
-          ),
-        ],
       ),
-      barrierDismissible: false,
+      barrierDismissible: true,
     );
   }
 
@@ -755,7 +995,7 @@ class _EventsViewState extends State<EventsView> with TickerProviderStateMixin {
                             painter: RippleRingPainter(
                               _rippleController,
                               color: const Color(0xFF2AC769)
-                                  .withOpacity(0.7),
+                                  .withValues(alpha: 0.7),
                               strokeWidth: 2.5.w,
                               expansionFactor: 1.5,
                             ),
@@ -777,7 +1017,7 @@ class _EventsViewState extends State<EventsView> with TickerProviderStateMixin {
                                   offset: const Offset(0, 8),
                                   blurRadius: 16,
                                   color: const Color(0xFF1FA259)
-                                      .withOpacity(0.35),
+                                      .withValues(alpha: 0.35),
                                 ),
                               ],
                             ),
@@ -884,8 +1124,7 @@ class _EventsViewState extends State<EventsView> with TickerProviderStateMixin {
                   Obx(() => Visibility(
                         visible: controller.selectedFilter.value != 'Tất cả',
                         child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 16.w, vertical: 12.h),
+                          padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 32.h),
                           child: AbsorbPointer(
                             absorbing: _isShowcaseActive,
                             child: GestureDetector(
@@ -927,7 +1166,7 @@ class _EventsViewState extends State<EventsView> with TickerProviderStateMixin {
                                 boxShadow: [
                                   BoxShadow(
                                     color:
-                                        const Color(0xFF2AC769).withOpacity(0.35),
+                                        const Color(0xFF2AC769).withValues(alpha: 0.35),
                                     offset: const Offset(0, 8),
                                     blurRadius: 18,
                                   ),
@@ -941,7 +1180,7 @@ class _EventsViewState extends State<EventsView> with TickerProviderStateMixin {
                                     width: 28.r,
                                     height: 28.r,
                                     decoration: BoxDecoration(
-                                      color: Colors.white.withOpacity(0.2),
+                                      color: Colors.white.withValues(alpha: 0.2),
                                       shape: BoxShape.circle,
                                     ),
                                     child: Icon(
@@ -1255,7 +1494,7 @@ class _EventsViewState extends State<EventsView> with TickerProviderStateMixin {
             borderRadius: BorderRadius.circular(24.r),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: Colors.black.withValues(alpha: 0.05),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
@@ -1311,12 +1550,12 @@ class _EventsViewState extends State<EventsView> with TickerProviderStateMixin {
                             : null,
                         color: isSelected
                             ? null
-                            : Colors.white.withOpacity(0.92),
+                            : Colors.white.withValues(alpha: 0.92),
                         boxShadow: [
                           BoxShadow(
                             color: isSelected
-                                ? const Color(0xFF24C16B).withOpacity(0.35)
-                                : Colors.black.withOpacity(0.04),
+                                ? const Color(0xFF24C16B).withValues(alpha: 0.35)
+                                : Colors.black.withValues(alpha: 0.04),
                             blurRadius: isSelected ? 12 : 6,
                             offset: const Offset(0, 3),
                           ),
@@ -1335,24 +1574,9 @@ class _EventsViewState extends State<EventsView> with TickerProviderStateMixin {
                               isSelected ? FontWeight.w700 : FontWeight.w600,
                           color: isSelected
                               ? Colors.white
-                              : AppColors.textPrimary.withOpacity(0.82),
+                              : AppColors.textPrimary.withValues(alpha: 0.82),
                         ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            if (isSelected)
-                              Container(
-                                width: 8.r,
-                                height: 8.r,
-                                margin: EdgeInsets.only(right: 6.w),
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            Text(tabTitle),
-                          ],
-                        ),
+                        child: Text(tabTitle),
                       ),
                     ),
                   ),

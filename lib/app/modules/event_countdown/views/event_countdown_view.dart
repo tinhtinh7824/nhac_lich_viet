@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:nhac_lich_viet/app/widgets/shared_buttons/share_bottom_sheet.dart';
 
 import '../controllers/event_countdown_controller.dart';
 import '../../../utils/snackbar_utils.dart';
@@ -298,11 +299,13 @@ class EventCountdownView extends GetView<EventCountdownController> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Image.asset(
-                    'assets/icons/add_event.png',
-                    width: 20.w,
-                    height: 20.w,
-                    fit: BoxFit.contain,
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(4),
+                    child: Image.asset(
+                      'assets/icons/logo.png',
+                      width: 30,
+                      height: 30,
+                    ),
                   ),
                   SizedBox(width: 8.w),
                   Text(
@@ -380,73 +383,10 @@ class EventCountdownView extends GetView<EventCountdownController> {
       return;
     }
 
-    final bottomInset = MediaQuery.of(context).viewPadding.bottom;
-
-    Get.bottomSheet(
-      Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
-        ),
-        padding: EdgeInsets.fromLTRB(
-          16.w,
-          16.h,
-          16.w,
-          16.h + bottomInset,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(18.r),
-              child: SizedBox(
-                width: 0.8.sw,
-                child: AspectRatio(
-                  aspectRatio: 9 / 16,
-                  child: Image.memory(
-                    bytes,
-                    fit: BoxFit.contain,
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: 20.h),
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton.icon(
-                    onPressed: () async {
-                      Get.back();
-                      await controller.shareEvent(imageBytes: bytes);
-                    },
-                    icon: const Icon(Icons.share),
-                    label: const Text('Chia sẻ'),
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 14.h),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 12.w),
-                Expanded(
-                  child: OutlinedButton.icon(
-                    onPressed: () async {
-                      await controller.downloadCountdownImage(imageBytes: bytes);
-                    },
-                    icon: const Icon(Icons.download),
-                    label: const Text('Tải về'),
-                    style: OutlinedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 14.h),
-                      side: BorderSide(color: Colors.grey.shade400),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-      backgroundColor: Colors.transparent,
-      isScrollControlled: true,
+    ShareBottomSheet.show(
+      imageBytes: bytes,
+      onShare: () => controller.shareEvent(imageBytes: bytes),
+      onDownload: () => controller.downloadCountdownImage(imageBytes: bytes),
     );
   }
 }
