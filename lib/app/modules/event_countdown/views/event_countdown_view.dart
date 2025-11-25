@@ -156,7 +156,9 @@ class EventCountdownView extends GetView<EventCountdownController> {
           },
         ),
         _buildDateInfo(),
+        SizedBox(height: 78.h),
       ],
+      
     );
   }
 

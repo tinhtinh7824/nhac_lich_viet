@@ -23,13 +23,15 @@ class EventSearchView extends GetView<EventSearchController> {
           Container(
             decoration: const BoxDecoration(
     gradient: LinearGradient(
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-      colors: [
-        Color(0xFF4DBA6E), // xanh lá đậm pha vàng
-    Color(0xFFDFFFEA), // xanh lá non sáng
-      ],
-    ),
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                stops: [0.0, 0.7, 1.0],
+                colors: [
+                  Color(0xFF2E7D4E), // xanh lá đậm hơn
+                  Color(0xFF4DBA6E), // xanh lá chính
+                  Color(0xFF6BCF7F), // xanh lá nhạt
+                ],
+              ),
   ),
             child: SafeArea(
               bottom: false,
@@ -57,7 +59,7 @@ class EventSearchView extends GetView<EventSearchController> {
                         Text(
                           'TÌM KIẾM SỰ KIỆN',
                           style: TextStyle(
-                            color: const Color.fromARGB(255, 3, 94, 20),
+                            color: const Color.fromARGB(255, 255, 255, 255),
                             fontSize: 20.sp,
                             fontWeight: FontWeight.w700,
                           ),
@@ -117,7 +119,16 @@ class EventSearchView extends GetView<EventSearchController> {
           ),
           Expanded(
             child: Container(
-              color: const Color(0xFFF7F9F7),
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0xFFF7F9F7),
+                    Color(0xFFEEF5EE),
+                  ],
+                ),
+              ),
               child: Obx(() {
                 if (controller.isLoading.value) {
                   return const Center(
@@ -133,29 +144,60 @@ class EventSearchView extends GetView<EventSearchController> {
                     controller.searchQuery.value ==
                         controller.lastSearchedQuery.value) {
                   return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(height: 16.h),
-                        Text(
-                          'Không tìm thấy kết quả phù hợp',
-                          style: TextStyle(
-                            fontSize: 19.sp,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 32.w),
+                      padding: EdgeInsets.all(24.w),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20.r),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.1),
+                            blurRadius: 20,
+                            offset: const Offset(0, 10),
                           ),
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(height: 8.h),
-                        Text(
-                          'Bạn hãy thử từ khóa khác hoặc xem ở phần sự kiện nhé!',
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            color: Colors.grey[600],
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            width: 80.w,
+                            height: 80.w,
+                            decoration: BoxDecoration(
+                              gradient: const LinearGradient(
+                                colors: [Color(0xFF4DBA6E), Color(0xFF6BCF7F)],
+                              ),
+                              borderRadius: BorderRadius.circular(40.r),
+                            ),
+                            child: Icon(
+                              Icons.search_off_outlined,
+                              color: Colors.white,
+                              size: 40.sp,
+                            ),
                           ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
+                          SizedBox(height: 20.h),
+                          Text(
+                            'Không tìm thấy kết quả phù hợp',
+                            style: TextStyle(
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.w600,
+                              color: const Color(0xFF2D3748),
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: 12.h),
+                          Text(
+                            'Bạn hãy thử từ khóa khác hoặc xem ở phần sự kiện nhé!',
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              color: Colors.grey[600],
+                              height: 1.4,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 }
@@ -193,24 +235,66 @@ class EventSearchView extends GetView<EventSearchController> {
                   // Empty search query
                   if (controller.searchQuery.isEmpty) {
                     return Center(
-                      child: Text(
-                        'Nhập tên sự kiện để tìm kiếm.',
-                        style:
-                            TextStyle(fontSize: 18.sp, color: Colors.grey[600]),
+                      child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 32.w),
+                        padding: EdgeInsets.all(24.w),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20.r),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.08),
+                              blurRadius: 15,
+                              offset: const Offset(0, 8),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              width: 70.w,
+                              height: 70.w,
+                              decoration: BoxDecoration(
+                                gradient: const LinearGradient(
+                                  colors: [Color(0xFF4DBA6E), Color(0xFF6BCF7F)],
+                                ),
+                                borderRadius: BorderRadius.circular(35.r),
+                              ),
+                              child: Icon(
+                                Icons.search,
+                                color: Colors.white,
+                                size: 35.sp,
+                              ),
+                            ),
+                            SizedBox(height: 16.h),
+                            Text(
+                              'Tìm kiếm sự kiện',
+                              style: TextStyle(
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.w600,
+                                color: const Color(0xFF2D3748),
+                              ),
+                            ),
+                            SizedBox(height: 8.h),
+                            Text(
+                              'Nhập tên sự kiện để tìm kiếm.',
+                              style: TextStyle(
+                                fontSize: 15.sp,
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   }
                 }
 
-                return ListView.separated(
+                return ListView.builder(
                   padding:
-                      EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.w),
+                      EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
                   itemCount: controller.searchResults.length,
-                  separatorBuilder: (context, index) => Divider(
-                    height: 1.h,
-                    thickness: 1.h,
-                    color: AppColors.divider.withValues(alpha: 0.5),
-                  ),
                   itemBuilder: (context, index) {
                     final event = controller.searchResults[index];
                     return SearchResultEventItem(

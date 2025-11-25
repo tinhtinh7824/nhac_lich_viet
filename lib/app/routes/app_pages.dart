@@ -12,6 +12,8 @@ import '../modules/profile_event/bindings/profile_event_binding.dart';
 import '../modules/daily_event_popup/views/daily_event_popup_view.dart';
 import '../modules/daily_event_popup/bindings/daily_event_popup_binding.dart';
 import '../modules/add_event/views/create_new_event_view.dart';
+import '../modules/ai_chat/views/ai_chat_view.dart';
+import '../modules/ai_chat/bindings/ai_chat_binding.dart';
 
 part 'app_routes.dart';
 
@@ -55,6 +57,11 @@ class AppPages {
       name: _Paths.CREATE_NEW_EVENT,
       page: () => const CreateEventView(),
       binding: AddEventBinding(),
+    ),
+    GetPage(
+      name: _Paths.AI_CHAT,
+      page: () => const AiChatView(),
+      binding: AiChatBinding(),
     ),
   ];
 }

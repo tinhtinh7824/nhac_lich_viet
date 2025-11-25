@@ -17,10 +17,15 @@ class AddEventView extends GetView<AddEventController> {
         child: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xFF0F5925), Color(0xFF1FA259)],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                stops: [0.0, 0.7, 1.0],
+                colors: [
+                  Color(0xFF2E7D4E), // xanh lá đậm hơn
+                  Color(0xFF4DBA6E), // xanh lá chính
+                  Color(0xFF6BCF7F), // xanh lá nhạt
+                ],
+              ),
           ),
           child: AppBar(
             title: Text(
@@ -76,6 +81,7 @@ class AddEventView extends GetView<AddEventController> {
           ],
         );
       }),
+      
     );
   }
 
@@ -92,7 +98,7 @@ class AddEventView extends GetView<AddEventController> {
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withValues(alpha: 0.05),
               blurRadius: 12,
               offset: const Offset(0, 6),
             ),
@@ -114,7 +120,7 @@ class AddEventView extends GetView<AddEventController> {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFF1FA259).withOpacity(0.25),
+                    color: const Color(0xFF1FA259).withValues(alpha: 0.25),
                     blurRadius: 12,
                     offset: const Offset(0, 6),
                   ),
@@ -130,12 +136,12 @@ class AddEventView extends GetView<AddEventController> {
                         placeholder: (context, url) => Icon(
                           Icons.event,
                           size: 42.w,
-                          color: Colors.white.withOpacity(0.7),
+                          color: Colors.white.withValues(alpha: 0.7),
                         ),
                         errorWidget: (context, url, error) => Icon(
                           Icons.event,
                           size: 42.w,
-                          color: Colors.white.withOpacity(0.7),
+                          color: Colors.white.withValues(alpha: 0.7),
                         ),
                       )
                     : Icon(

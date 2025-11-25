@@ -1,6 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../data/models/event_category_model.dart';
+import '../../../data/models/event_model.dart';
+import '../../../data/models/custom_reminder_config.dart';
 import '../../../services/event_category_service.dart';
+import '../../../services/notification_service.dart';
 import '../../../utils/logger_utils.dart';
 import '../../../routes/app_pages.dart';
 import '../../../services/analytics_service.dart';
@@ -84,4 +88,7 @@ class AddEventController extends GetxController {
       'selectedDate': selectedDate.value,
     });
   }
+
+  
+  
 }

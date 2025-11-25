@@ -675,9 +675,9 @@ class EventServices extends GetxService {
       for (final notif in currentNotifications) {
         if (notif.payload != null) {
           try {
-            final payload = jsonDecode(notif.payload!);
-            final eventId = payload['eventId'] as String?;
-            if (eventId != null) {
+            // Payload is just the eventId string, not JSON
+            final eventId = notif.payload!;
+            if (eventId.isNotEmpty) {
               scheduledEventIds.add(eventId);
             }
           } catch (e) {

@@ -12,3 +12,6 @@ PRODUCT_BUNDLE_IDENTIFIER = com.example.nhacLichViet
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2025 com.example. All rights reserved.
+
+// Minimum macOS version required by plugins such as gal
+MACOSX_DEPLOYMENT_TARGET = 11.0

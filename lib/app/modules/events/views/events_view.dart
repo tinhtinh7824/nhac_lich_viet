@@ -13,7 +13,6 @@ import '../../../data/models/event_model.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:nhac_lich_viet/app/modules/detail/services/lunar_service.dart';
 import 'dart:io' show Platform;
-import 'package:nhac_lich_viet/app/theme/app_colors.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:nhac_lich_viet/app/utils/snackbar_utils.dart';
@@ -194,7 +193,7 @@ class _EventsViewState extends State<EventsView> with TickerProviderStateMixin {
     });
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_showcaseContext == null) return;
-      ShowCaseWidget.of(_showcaseContext!)?.startShowCase([
+      ShowCaseWidget.of(_showcaseContext!).startShowCase([
         _searchShowcaseKey,
         _addShowcaseKey,
         _swipeShowcaseKey,
@@ -220,7 +219,7 @@ class _EventsViewState extends State<EventsView> with TickerProviderStateMixin {
           _isShowcaseActive = false;
         });
       }
-      showcaseState?.dismiss();
+      showcaseState.dismiss();
     } else {
       showcaseState?.next();
     }
@@ -239,7 +238,7 @@ class _EventsViewState extends State<EventsView> with TickerProviderStateMixin {
         borderRadius: BorderRadius.circular(12.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 8,
             offset: const Offset(0, 4),
           ),
@@ -970,87 +969,34 @@ class _EventsViewState extends State<EventsView> with TickerProviderStateMixin {
               child: _buildMainContent(),
             ),
             floatingActionButton: Obx(() {
-              return Visibility(
-                visible: controller.selectedFilter.value == 'Tất cả',
-                child: Showcase.withWidget(
-                  key: _addShowcaseKey,
-                  targetShapeBorder: const CircleBorder(),
-                  disableDefaultTargetGestures: true,
-                  width: 260.w,
-                  height: 220.h,
-                  container: _buildShowcaseTooltip(
-                    title: 'Thêm lịch mới',
-                    description:
-                        'Nhấn để tạo sự kiện và đặt lời nhắc mới cho bạn hoặc người thân.',
-                    onNext: () => _goToNextShowcaseStep(),
-                  ),
-                  child: AbsorbPointer(
-                    absorbing: _isShowcaseActive,
-                    child: GestureDetector(
-                      onTap: controller.goToAddEvent,
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          CustomPaint(
-                            painter: RippleRingPainter(
-                              _rippleController,
-                              color: const Color(0xFF2AC769)
-                                  .withValues(alpha: 0.7),
-                              strokeWidth: 2.5.w,
-                              expansionFactor: 1.5,
-                            ),
-                            size: Size(78.w, 78.h),
-                          ),
-                          Container(
-                            height: 70.h,
-                            width: 70.w,
-                            padding: EdgeInsets.all(5.r),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              gradient: const LinearGradient(
-                                colors: [Color(0xFF2AC769), Color(0xFF1FA259)],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  offset: const Offset(0, 8),
-                                  blurRadius: 16,
-                                  color: const Color(0xFF1FA259)
-                                      .withValues(alpha: 0.35),
-                                ),
-                              ],
-                            ),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white,
-                              ),
-                              child: Center(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    gradient: const LinearGradient(
-                                      colors: [Color(0xFF24C16B), Color(0xFF39D27D)],
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                    ),
-                                  ),
-                                  padding: EdgeInsets.all(14.r),
-                                  child: Image.asset(
-                                    'assets/icons/add_event.png',
-                                    width: 26.w,
-                                    height: 26.h,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+              final bool showMainActions =
+                  controller.selectedFilter.value == 'Tất cả';
+              if (!showMainActions) {
+                return const SizedBox.shrink();
+              }
+              return AbsorbPointer(
+                absorbing: _isShowcaseActive,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    _buildChatAssistantButton(),
+                    SizedBox(height: 18.h),
+                    Showcase.withWidget(
+                      key: _addShowcaseKey,
+                      targetShapeBorder: const CircleBorder(),
+                      disableDefaultTargetGestures: true,
+                      width: 260.w,
+                      height: 220.h,
+                      container: _buildShowcaseTooltip(
+                        title: 'Thêm lịch mới',
+                        description:
+                            'Nhấn để tạo sự kiện và đặt lời nhắc mới cho bạn hoặc người thân.',
+                        onNext: () => _goToNextShowcaseStep(),
                       ),
+                      child: _buildAddEventButton(),
                     ),
-                  ),
+                  ],
                 ),
               );
             }),
@@ -1121,21 +1067,23 @@ class _EventsViewState extends State<EventsView> with TickerProviderStateMixin {
                       },
                     ),
                   ),
-                  Obx(() => Visibility(
-                        visible: controller.selectedFilter.value != 'Tất cả',
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 32.h),
-                          child: AbsorbPointer(
-                            absorbing: _isShowcaseActive,
-                            child: GestureDetector(
-                              onTap: () {
-                                final selectedCategory = controller.eventCategories
-                                    .firstWhereOrNull(
-                                        (cat) => cat.title == filterTitle);
+                  Obx(
+                    () => Visibility(
+                      visible: controller.selectedFilter.value != 'Tất cả',
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 32.h),
+                        child: AbsorbPointer(
+                          absorbing: _isShowcaseActive,
+                          child: GestureDetector(
+                            onTap: () {
+                              final selectedCategory = controller.eventCategories
+                                  .firstWhereOrNull(
+                                      (cat) => cat.title == filterTitle);
 
-                                if (selectedCategory != null) {
+                              if (selectedCategory != null) {
                                 LoggerUtils.debug(
-                                    "Navigating to Create Event from EventsView button with category: ${selectedCategory.title}");
+                                  "Navigating to Create Event from EventsView button with category: ${selectedCategory.title}",
+                                );
                                 Get.toNamed(
                                   Routes.CREATE_NEW_EVENT,
                                   arguments: {
@@ -1145,14 +1093,17 @@ class _EventsViewState extends State<EventsView> with TickerProviderStateMixin {
                                 );
                               } else {
                                 LoggerUtils.warning(
-                                    "Category '$filterTitle' not found when trying to add event from EventsView (non-'Tất cả' filter). Navigating to add event flow.");
+                                  "Category '$filterTitle' not found when trying to add event from EventsView (non-'Tất cả' filter). Navigating to add event flow.",
+                                );
                                 controller.goToAddEvent();
                               }
                             },
                             child: Container(
                               width: double.infinity,
                               padding: EdgeInsets.symmetric(
-                                  vertical: 16.h, horizontal: 20.w),
+                                vertical: 16.h,
+                                horizontal: 20.w,
+                              ),
                               decoration: BoxDecoration(
                                 gradient: const LinearGradient(
                                   colors: [
@@ -1165,8 +1116,8 @@ class _EventsViewState extends State<EventsView> with TickerProviderStateMixin {
                                 borderRadius: BorderRadius.circular(18.r),
                                 boxShadow: [
                                   BoxShadow(
-                                    color:
-                                        const Color(0xFF2AC769).withValues(alpha: 0.35),
+                                    color: const Color(0xFF2AC769)
+                                        .withValues(alpha: 0.35),
                                     offset: const Offset(0, 8),
                                     blurRadius: 18,
                                   ),
@@ -1204,10 +1155,12 @@ class _EventsViewState extends State<EventsView> with TickerProviderStateMixin {
                                   ),
                                 ],
                               ),
-                              ),
-                            )),
+                            ),
+                          ),
                         ),
-                      )),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -1215,6 +1168,121 @@ class _EventsViewState extends State<EventsView> with TickerProviderStateMixin {
         ],
       );
     });
+  }
+
+  Widget _buildChatAssistantButton() {
+    return GestureDetector(
+      onTap: () => Get.toNamed(Routes.AI_CHAT),
+      child: Container(
+        height: 62.h,
+        width: 62.w,
+        padding: EdgeInsets.all(4.r),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          gradient: const LinearGradient(
+            colors: [Color(0xFF6C8CFF), Color(0xFF4F6BFF)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          boxShadow: [
+            BoxShadow(
+              offset: const Offset(0, 6),
+              blurRadius: 14,
+              color: const Color(0xFF4F6BFF).withValues(alpha: 0.35),
+            ),
+          ],
+        ),
+        child: Container(
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.white,
+          ),
+          child: Center(
+            child: Container(
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: LinearGradient(
+                  colors: [Color(0xFF708BFF), Color(0xFF3E5BFF)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
+              padding: EdgeInsets.all(12.r),
+              child: Icon(
+                Icons.psychology_outlined,
+                color: Colors.white,
+                size: 24.sp,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAddEventButton() {
+    return GestureDetector(
+      onTap: controller.goToAddEvent,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          CustomPaint(
+            painter: RippleRingPainter(
+              _rippleController,
+              color: const Color(0xFF2AC769).withValues(alpha: 0.7),
+              strokeWidth: 2.5.w,
+              expansionFactor: 1.5,
+            ),
+            size: Size(78.w, 78.h),
+          ),
+          Container(
+            height: 70.h,
+            width: 70.w,
+            padding: EdgeInsets.all(5.r),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: const LinearGradient(
+                colors: [Color(0xFF2AC769), Color(0xFF1FA259)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  offset: const Offset(0, 8),
+                  blurRadius: 16,
+                  color: const Color(0xFF1FA259).withValues(alpha: 0.35),
+                ),
+              ],
+            ),
+            child: Container(
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+              ),
+              child: Center(
+                child: Container(
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: LinearGradient(
+                      colors: [Color(0xFF24C16B), Color(0xFF39D27D)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                  ),
+                  padding: EdgeInsets.all(14.r),
+                  child: Image.asset(
+                    'assets/icons/add_event.png',
+                    width: 26.w,
+                    height: 26.h,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildShimmerLoading() {

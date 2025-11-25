@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import '../controllers/add_event_controller.dart';
 import '../controllers/create_event_controller.dart';
 import '../../../services/event_category_service.dart';
+import '../../../services/analytics_service.dart';
 
 class AddEventBinding extends Bindings {
   @override
@@ -42,6 +43,11 @@ class AddEventBinding extends Bindings {
     // Đảm bảo EventCategoryService đã được đăng ký
     if (!Get.isRegistered<EventCategoryService>()) {
       Get.put(EventCategoryService(), permanent: true);
+    }
+
+    // Đảm bảo AnalyticsService đã được đăng ký
+    if (!Get.isRegistered<AnalyticsService>()) {
+      Get.put(AnalyticsService(), permanent: true);
     }
 
     // Controller cho trang danh sách danh mục - đăng ký trước
